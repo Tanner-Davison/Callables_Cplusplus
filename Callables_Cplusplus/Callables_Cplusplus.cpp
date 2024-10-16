@@ -1,45 +1,39 @@
-// Callables_Cplusplus.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <iostream>
 
-template<typename T>
-T add(T x, T y) {
-	return (x + y);
+int square(int p) { return (p * p); }
+int add(int x, int y) { return x + y; }
+int multiply(int x, int y) { return x * y; }
+
+void run() { std::cout << "Imma Runnin" << std::endl; }
+void walk() { std::cout << "Imma walkin" << std::endl; }
+void remapKey(void(*&btnToRemap)(), void(*btnAction)()) { btnToRemap = btnAction; }
+
+void display(int p) {
+	std::cout << p << std::endl;
 }
-
-struct Times {
-	int factor;
-	Times(int numP) : factor(numP) {}
-	int operator()(int x)const {
-		return (factor * x);
+void printScores(const int scoresP[], int sizeP, void(*&fp_display)(int xP)) {
+	for (int i = 0; i < sizeP; i++) {
+		fp_display(scoresP[i]);
 	}
-};
-
+}
 
 int main()
 {
-	int a = 500;
-	int b = 378;
-	Times timesTwo(2);
-	Times timesFifty(50);
+	void (*fp_upArrowBtn)() = walk;
+	//register up btn;
+	remapKey(fp_upArrowBtn, run);
 
-	int resultA = timesTwo(a);
-	int resultB = timesFifty(b);
+	fp_upArrowBtn();
+	fp_upArrowBtn();
 
-	std::cout << (resultA) << std::endl;
-	std::cout << (resultB) << std::endl;
+	void(*dis)(int x) = display;
+
+	const int ARRSIZE = 5;
+	int scores[ARRSIZE] = { 34,52,81 };
+	printScores(scores, ARRSIZE, dis);
 
 	return EXIT_SUCCESS;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

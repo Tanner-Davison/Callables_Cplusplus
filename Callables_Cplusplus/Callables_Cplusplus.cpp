@@ -1,57 +1,110 @@
 
 #include <iostream>
+#include <cstring>
+#include <vector>
+#include <array>
+#include "AllFunctions.h"
+using std::cout;
+enum class UserChoice { ADD = 1, MULTIPLY = 2 };
+template<typename T>
+using Test = bool(*)(const T&, const T&);
 
-int square(int p) { return (p * p); }
-int add(int x, int y) { return x + y; }
-int multiply(int x, int y) { return x * y; }
+//The asterisk (*) in using Test = bool(*)(const T&, const T&);
+// indicates that Test is a type alias for a pointer to a function. 
+// This function takes two parameters of type const T& (constant references to objects of type T)
+// and returns a bool.
 
-void run() { std::cout << "Imma Runnin" << std::endl; }
-void walk() { std::cout << "Imma walkin" << std::endl; }
-void remapKey(void(*&btnToRemap)(), void(*btnAction)()) { btnToRemap = btnAction; }
 
-void display(int p) {
-	std::cout << p << std::endl;
+template<typename T>
+bool lessThan(const T& operand1, const T& operand2) {
+	if (operand1 < operand2) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
-void display2(int p) {
-	std::cout << p << "\t";
+template <typename T>
+bool greaterThan(const T& operand1, const T& operand2) {
+	if (operand1 > operand2) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
-void printScores(const int scoresP[], int sizeP, void(*&fp_display)(int xP)) {
+
+template<typename T>
+void compare(T operand1, T operand2, Test<T> fp_comparator) {
+	if (fp_comparator(operand1, operand2)) {
+		cout << "TRUE" << std::endl;
+	}
+	else {
+		cout << "FALSE" << std::endl;
+	}
+}
+
+template <typename T>
+T getElement(const T scoresP[], int sizeP, Test<T> fpAlias_func) {
+	T element = scoresP[0];
 	for (int i = 0; i < sizeP; i++) {
-		fp_display(scoresP[i]);
+		if (fpAlias_func(scoresP[i], element)) {
+			element = scoresP[i];
+		}
+	}
+	return element;
+}
+template <typename T>
+T middle(const T scoresP[], int sizeP) {
+	T mid = sizeP / 2;
+	if (sizeP % 2 == 0) {
+		// Even number of elements
+		// Return the average of the two middle elements
+		return (scoresP[mid - 1] + scoresP[mid]) / 2.0;
+	}
+	else {
+		// Odd number of elements
+		// Return the middle element
+		return scoresP[mid];
+	}
+	T element = scoresP[mid];
+	return element;
+}
+template<typename T>
+T increment(T p) {
+	return (p + p);
+}
+
+template<typename T>
+void modifyElements(T elements[], int sizeP, T(*fp_modify)(T)) {
+	for (int i = 0; i < sizeP; i++) {
+		elements[i] = fp_modify(elements[i]);
 	}
 }
 
 int main()
 {
+	const int SIZE = 6;
+	int x{ 200 }, y{ 300 };
+	int points[SIZE]{ 5,10,15,20,25,30 };
+	modifyElements(points, SIZE, multiplyForEach);
+	Display dis;
+	printScores(points, SIZE, dis);
 
-	void (*fp_upArrowBtn)() = walk;
-	//register up btn;
-	remapKey(fp_upArrowBtn, run);
+	compare(x, y, lessThan);
+	compare(x, y, greaterThan);
 
-	fp_upArrowBtn();
-	fp_upArrowBtn();
+	int greatestPoint = getElement(points, SIZE, greaterThan);
+	int leastGreatest = getElement(points, SIZE, lessThan);
+	int isMiddle = middle(points, SIZE);
 
-	void(*dis)(int x) = display2;
-	void(*dis1)(int x) = display;
-
-	const int ARRSIZE = 5;
-	int scores[ARRSIZE] = { 34,52,81 };
-
-	printScores(scores, ARRSIZE, dis1);
-	printScores(scores, ARRSIZE, dis);
-
-	//array of function pointers
-
-	int(*fp_arr[])(int, int) = { add, multiply };
-	int x{}, y{}, choice{};
-
-	std::cout << "Enter 2 Numbers";
-	std::cin >> x >> y;
-
-	std::cout << "Enter 0 to add, 1 to multiply";
-	std::cin >> choice;
-
-	std::cout << (*fp_arr[choice])(x, y) << std::endl;
+	for (int p : points) {
+		std::cout << p << " ";
+	}
+	cout << "\n";
+	cout << "Greatest: " << greatestPoint << "\t";
+	cout << "Least: " << leastGreatest << "\t";
+	cout << "Middle: " << isMiddle << "\n";
 
 	return EXIT_SUCCESS;
 }

@@ -13,10 +13,12 @@ void walk();
 void remapKey(void(*&btnToRemap)(), void(*btnAction)());
 
 void display2(int p);
+
 class Display {
 public:
 	void operator()(int p)const;
 };
-void printScores(const int scoresP[], int sizeP, Display display);
+void printScores(const int scoresP[], int sizeP, Display displayP);
+
 void displayString(std::string myStr);
 

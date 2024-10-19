@@ -76,20 +76,40 @@ T increment(T p) {
 }
 
 template<typename T>
-void modifyElements(T elements[], int sizeP, T(*fp_modify)(T)) {
+class AdditionFunctor {
+public:
+	T addBaseNum;
+	AdditionFunctor(T numP) :addBaseNum(numP) {}
+	T operator()(T operand)const {
+		return (addBaseNum + operand);
+	}
+};
+
+template<typename T, typename MODIFY>
+void modifyElements(T elements[], int sizeP, const MODIFY& modify) {
 	for (int i = 0; i < sizeP; i++) {
-		elements[i] = fp_modify(elements[i]);
+		elements[i] = modify(elements[i]);
 	}
 }
+
 
 int main()
 {
 	const int SIZE = 6;
 	int x{ 200 }, y{ 300 };
-	int points[SIZE]{ 5,10,15,20,25,30 };
-	modifyElements(points, SIZE, multiplyForEach);
-	Display dis;
-	printScores(points, SIZE, dis);
+	int points[SIZE]{ 5, 10, 15, 20, 25, 30 };
+	std::string myStrArr[SIZE]{ "Tanner","Alyssa","Bubba","ALEXIS","RYAN" };
+
+	AdditionFunctor<int> fiveTimes(5);
+	AdditionFunctor<std::string> addTwo("Two");
+	modifyElements(myStrArr, SIZE, addTwo);
+
+	for (std::string x : myStrArr) {
+		std::cout << x << " ";
+	}
+	std::cout << std::endl;
+	Display display;
+	printScores(points, SIZE, display);
 
 	compare(x, y, lessThan);
 	compare(x, y, greaterThan);

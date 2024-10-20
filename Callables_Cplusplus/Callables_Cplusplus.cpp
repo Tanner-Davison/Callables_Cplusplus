@@ -3,7 +3,9 @@
 #include <cstring>
 #include <vector>
 #include <array>
+#include <functional>
 #include "AllFunctions.h"
+#include <algorithm>j
 using std::cout;
 enum class UserChoice { ADD = 1, MULTIPLY = 2 };
 template<typename T>
@@ -79,6 +81,7 @@ template<typename T>
 class AdditionFunctor {
 public:
 	T addBaseNum;
+	AdditionFunctor() = default;
 	AdditionFunctor(T numP) :addBaseNum(numP) {}
 	T operator()(T operand)const {
 		return (addBaseNum + operand);
@@ -95,13 +98,34 @@ void modifyElements(T elements[], int sizeP, const MODIFY& modify) {
 
 int main()
 {
+
 	const int SIZE = 6;
 	int x{ 200 }, y{ 300 };
-	int points[SIZE]{ 5, 10, 15, 20, 25, 30 };
+	int points[SIZE]{ 54, 15, 34, 20, 245, 330 };
 	std::string myStrArr[SIZE]{ "Tanner","Alyssa","Bubba","ALEXIS","RYAN" };
 
-	AdditionFunctor<int> fiveTimes(5);
+	std::vector<std::string>myInts{ "Tanner", "Jared","wes", "daniel", "marshal", "Abraham" };
+	std::sort(myInts.begin(), myInts.end());
+
+	int greatestPoint = getElement(points, SIZE, greaterThan);
+	int leastGreatest = getElement(points, SIZE, lessThan);
+	int isMiddle = middle(points, SIZE);
+
 	AdditionFunctor<std::string> addTwo("Two");
+	AdditionFunctor<int> fiveTimes(5);
+
+	modifyElements(points, SIZE, fiveTimes);
+
+	// predefined function object
+	std::greater<int>greatest;
+	//using function object
+	std::cout << greatest(5, 4) << std::endl;
+
+	//inline lambda function
+	std::cout << "LambdaFuncton: \n" << [](int x, int y) {return x + y; }(5, 4) << std::endl;
+
+
+
 	modifyElements(myStrArr, SIZE, addTwo);
 
 	for (std::string x : myStrArr) {
@@ -114,9 +138,13 @@ int main()
 	compare(x, y, lessThan);
 	compare(x, y, greaterThan);
 
-	int greatestPoint = getElement(points, SIZE, greaterThan);
-	int leastGreatest = getElement(points, SIZE, lessThan);
-	int isMiddle = middle(points, SIZE);
+
+
+
+
+
+
+	printSortedVec(myInts);
 
 	for (int p : points) {
 		std::cout << p << " ";

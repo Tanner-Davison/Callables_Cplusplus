@@ -1,5 +1,7 @@
 #include "AllFunctions.h"
 
+
+
 int square(int p)
 {
 	return (p * p);
@@ -37,6 +39,9 @@ void display2(int p)
 {
 	std::cout << p << "\t";
 }
+
+
+
 void printScores(const int scoresP[], int sizeP, Display displayP)
 {
 	for (int i = 0; i < sizeP; i++) {

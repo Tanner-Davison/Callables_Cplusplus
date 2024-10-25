@@ -1,12 +1,9 @@
-
-#include <iostream>
-#include <cstring>
-#include <vector>
-#include <array>
-#include <functional>
 #include "AllFunctions.h"
-#include <algorithm>j
-using std::cout;
+#include <print>
+#include <functional>  
+#include <algorithm>   
+#include <iostream>
+using namespace std;
 enum class UserChoice { ADD = 1, MULTIPLY = 2 };
 template<typename T>
 using Test = bool(*)(const T&, const T&);
@@ -96,7 +93,7 @@ void modifyElements(T elements[], int sizeP, const MODIFY& modify) {
 }
 
 
-int main()
+int main(int args, char** argv)
 {
 
 	const int SIZE = 6;
@@ -139,13 +136,6 @@ int main()
 	compare(x, y, greaterThan);
 
 
-
-
-
-
-
-	printSortedVec(myInts);
-
 	for (int p : points) {
 		std::cout << p << " ";
 	}
@@ -153,6 +143,8 @@ int main()
 	cout << "Greatest: " << greatestPoint << "\t";
 	cout << "Least: " << leastGreatest << "\t";
 	cout << "Middle: " << isMiddle << "\n";
+
+	std::cout << argv[1] << std::endl;
 
 	return EXIT_SUCCESS;
 }
